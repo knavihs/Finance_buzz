@@ -6,6 +6,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from .form import UserSignup,UserSignin,Stockform
 from django.contrib import messages
 from .stocks import Stocks_data
+from time import sleep
+
 # Create your views here.
 
 def registration(request):
@@ -18,7 +20,12 @@ def registration(request):
             last_name = form.cleaned_data['last_name']
             password = form.cleaned_data['password']
             User.objects.create_user(username=username,email=email,first_name=first_name,last_name=last_name,password=password)
-            return redirect('registration')
+            #return redirect('registration')
+            return render(request, 'customers/signup.html', {'form': form})
+        else:
+            messages.error(request,'Form data is invalid, check the mail ID you have given')
+            sleep(5)
+            return render(request, 'customers/signup.html', {'form': form})
     else:
         form=UserSignup()
         return render(request,'customers/signup.html',{'form':form})
@@ -77,5 +84,6 @@ def add_stock(request,user):
             stock_info = load.latest_data(benutzer=user)
             loser = load.days_loser()
             gainer = load.days_gainer()
+            sleep(5)
             return render(request,'customers/inside_profile.html',{'form':sform,'stock_info':stock_info,'loser':loser,'gainers':gainer})
 

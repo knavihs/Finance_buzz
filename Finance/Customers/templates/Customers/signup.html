@@ -76,7 +76,7 @@
 				</div>
 				<div class="d-flex justify-content-center form_container">
 
-					<form method="POST" action="">
+					<form method="post" action="">
                         {%csrf_token%}
 						<div class="input-group mb-3">
 							<div class="input-group-append">
@@ -135,21 +135,6 @@
 
 
 
-<div class="container">
-    <div class="panel">
-        <form method="POST">
-            {% csrf_token %}
-            <p><strong>Username:</strong> {{form.username}}</p>
-             <p><strong>Email:</strong> {{form.email}}</p>
-             <p><strong>First Name:</strong> {{form.first_name}}</p>
-             <p><strong>Last Name:</strong> {{form.last_name}}</p>
-             <p><strong>Password:</strong> {{form.password}}</p>
-             <p><strong>Confirm Password:</strong> {{form.confirm_password}}</p>
-            <button type="submit" class="btn">Signup</button>
-        </form>
-    </div>
-</div>
-    <button type="button" ><a href="{%url 'login_site' %}">Sign in</a></button>
 </center>
 </body>
 </html>
