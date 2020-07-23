@@ -83,6 +83,7 @@
                     <th style="text-align:center"><b>LOW</b> </th>
                     <th style="text-align:center"><b>CLOSE</b> </th>
                     <th style="text-align:center"><b>VOLUME</b> </th>
+                    <th style="text-align:center"><b>Income Statement</b></th>
                 </tr>
                 {% for company in stock_info %}
                 <tr>
@@ -92,6 +93,7 @@
                     <td style="height:50px;text-align:center;"><STRONG>USD {{company.low}}</STRONG></td>
                     <td style="height:50px;text-align:center;"><strong>USD {{company.close}}</STRONG></td>
                     <td style="height:50px;text-align:center;"><strong>{{company.volume}}</STRONG></td>
+                    <td style="height:50px;text-align:center;"><strong><a href="{%url 'downloadable' company.name%}">Click me</a> </STRONG></td>
                 </tr>
                 {%endfor%}
             </table>

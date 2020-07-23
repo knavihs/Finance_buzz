@@ -26,6 +26,28 @@ total_df = pandas.concat([df1,df2],axis=1,sort=True)
 
 print(total_df)'''
 
+from yahoo_fin.stock_info import get_income_statement
+msft = get_income_statement("MSFT")
+print(msft)
+df = pandas.DataFrame(msft,columns=['Breakdown','ttm','6/30/2019','6/30/2018','6/30/2017'])
+print(df)
+
+array=[]
+for ind in df.index:
+    data={
+        'Breakdown':df['Breakdown'][ind],
+        'Current':df['ttm'][ind],
+        '2019':df['6/30/2019'][ind],
+        '2018':df['6/30/2018'][ind],
+        '2017':df['6/30/2017'][ind]
+    }
+    print(data)
+    array.append(data)
+
+print(array)
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Stocks,Customer
+from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.core.exceptions import ObjectDoesNotExist
@@ -7,6 +8,7 @@ from .form import UserSignup,UserSignin,Stockform
 from django.contrib import messages
 from .stocks import Stocks_data
 from time import sleep
+import xlwt
 
 # Create your views here.
 
@@ -75,9 +77,12 @@ def add_stock(request,user):
                 b = Stocks.objects.get(Stock_name_symbol=stock_name.upper())
 
             user = User.objects.get(username=user)
-
-            c = Customer(user=user,companies_invested=b)
-            c.save()
+            if not Customer.objects.filter(user=user,companies_invested=b).exists():
+                c = Customer(user=user,companies_invested=b)
+                c.save()
+            else:
+                print("Stock already added")
+                c = Customer(user=user, companies_invested=b)
             messages.success(request, "Stock has been added to your viewing list")
             stock_info = []
             load = Stocks_data()
@@ -85,5 +90,38 @@ def add_stock(request,user):
             loser = load.days_loser()
             gainer = load.days_gainer()
             sleep(5)
+            sform = Stockform()
             return render(request,'customers/inside_profile.html',{'form':sform,'stock_info':stock_info,'loser':loser,'gainers':gainer})
+
+def downloadable(request,company):
+    print("Download button clicke")
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="statement.xls"'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet("sheet 1")
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.bold=True
+
+    columns = ['Breakdown','Current','Year-2019','Year-2018','Year-2018']
+    for col_num in range(len(columns)):
+        ws.write(row_num,col_num,columns[col_num],font_style)
+
+    font_style = xlwt.XFStyle()
+    load = Stocks_data()
+    stat_info = []
+    stat_info = load.income_stat(company=company)
+
+    for dic in stat_info:
+        row_num = row_num + 1
+        col_num = 0
+        for key,value in dic.items():
+            ws.write(row_num,col_num,value,font_style)
+            col_num = col_num + 1
+
+    wb.save(response)
+    return response
+
+
+
 

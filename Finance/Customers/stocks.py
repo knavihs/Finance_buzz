@@ -1,5 +1,5 @@
 from .models import Customer
-from yahoo_fin.stock_info import get_data,get_day_gainers,get_day_losers
+from yahoo_fin.stock_info import get_data,get_day_gainers,get_day_losers,get_income_statement
 import pandas as pd
 
 
@@ -73,3 +73,19 @@ class Stocks_data:
             data.append(dic)
 
         return data
+
+    def income_stat(self,company):
+        statement = get_income_statement(company)
+        df =pd.DataFrame(statement,columns=['Breakdown','ttm','6/30/2019','6/30/2018','6/30/2017'])
+        array=[]
+        for ind in df.index:
+            data={
+                'breakdown': df['Breakdown'][ind],
+                'current': df['ttm'][ind],
+                '2019':df['6/30/2019'][ind],
+                '2018':df['6/30/2018'][ind],
+                '2017':df['6/30/2017'][ind]
+            }
+            array.append(data)
+        print(array)
+        return array
