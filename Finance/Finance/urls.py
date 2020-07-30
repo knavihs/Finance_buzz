@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from Customers.tasks import bg_task
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('Customers.urls')),
 ]
+bg_task(repeat=1,repeat_until=None)
+
+
