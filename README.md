@@ -1,6 +1,6 @@
 # Finance_buzz
 
-Its an login web app for users who will enlist the stocks they are interested in and will get mail alert if they are performing good.
+Its a login web app for users who will enlist the stocks they are interested in and will get mail alert if they are performing good.
 
 Used yahoo_fin python package to retrieve to stocks data and used Pandas to format the data retieved.
 
